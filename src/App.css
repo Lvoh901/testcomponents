@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --carousel-height: 80vh;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --accent-color: #ebcab3;
+}
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 90vh;
+  overflow: hidden;
+  background-color: #000;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+}
+
+/* Custom Shaped Overlay */
+.content-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 40%, transparent 60%);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 100% 100%, 0% 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding: 10rem 5rem;
+  z-index: 10;
+  color: white;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .content-overlay {
+    width: 100%;
+    clip-path: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 100%);
+    padding: 2rem;
+    justify-content: flex-end;
+    padding-bottom: 5rem;
+  }
+}
+
+.carousel-content {
+  max-width: 35vw;
+}
+
+.carousel-content #title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: .5rem;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.carousel-content #description {
+  font-size: 1rem;
+  font-weight: 600;
+  max-width: 500px;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.controls {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.control-btn {
+  background: #ebcab3;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.control-btn:hover {
+  background: #3d0707;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  background: var(--accent-color);
+  z-index: 30;
+}
+
+.indicators {
+  position: absolute;
+  bottom: 2rem;
+  left: 5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .indicators {
+    left: 2rem;
+    bottom: 1rem;
+  }
+
+  .carousel-content h2 {
+    font-size: 2rem;
+  }
+}
+
+.indicator {
+  width: 40px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.indicator.active {
+  background: #ebcab3;
+}
