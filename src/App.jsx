@@ -18,69 +18,70 @@ import consultancyImg from './assets/consultancy.webp';
 const carouselItems = [
   {
     id: 1,
-    image: cityImg,
-    title: '3D City Mapping & Modeling',
-    description: 'Advanced 3D city mapping and modeling for urban planning and digital twin creation.',
+    image: consultancyImg,
+    title: 'Survey Consultancy',
+    description: 'Licensed Surveyors offer expert advice and consultancy in geospatial solution development.',
   },
   {
     id: 2,
-    image: droneImg,
-    title: 'Aerial Surveys/ Drone Mapping',
-    description: 'Aerial surveys and drone mapping for high-precision topographic data collection.',
+    image: cadastralImg,
+    title: 'Cadastral / Title Surveys',
+    description: 'Licensed surveyors are responsible for cadastral surveying, including the accurate demarcation of property boundaries to support land registration. This ensures secure land tenure, reduces boundary disputes, and upholds the integrity of the national land administration system.',
   },
   {
     id: 3,
-    image: engineeringImg,
-    title: 'Engineering Survey',
-    description: 'Engineering surveys providing comprehensive, sustainable, and resilient solutions.',
+    image: sectionalImg,
+    title: 'Sectional Property Surveys',
+    description: 'Licensed Surveyors are responsible for Sectional property surveys for preparing sectional plans that define individual units within buildings for registration of Sectional Titles.',
   },
   {
     id: 4,
-    image: hydroImg,
-    title: 'Hydrographic Survey',
-    description: 'Hydrographic surveys for detailed underwater mapping and water resource management.',
+    image: geodeticImg,
+    title: 'Geodetic Surveys',
+    description: 'Licensed surveyors conduct geodetic surveys to establish and maintain precise national and global reference frameworks for spatial positioning. This includes control networks, GNSS/CORS systems, and geodetic datums such as Arc 1960 and KENREF, which support accurate mapping, land administration, and spatial data integration. In doing so, they assist the Director of Surveys in maintaining national geodetic standards and ensuring consistency in all survey and mapping activities across the country..',
   },
   {
     id: 5,
-    image: gisImg,
-    title: 'GIS & Spatial Data Infrastructure',
-    description: 'GIS & spatial data infrastructure services, processing, and visualization for informed decision making.',
+    image: engineeringImg,
+    title: 'Engineering Survey',
+    description: 'Licensed surveyors undertake engineering and construction surveys to support the planning, design, and execution of building and infrastructure projects.',
   },
   {
     id: 6,
-    image: remoteImg,
-    title: 'Remote Sensing',
-    description: 'Remote sensing and satellite imagery analysis for large-scale environmental monitoring.',
+    image: hydroImg,
+    title: 'Hydrographic Survey',
+    description: 'Licensed surveyors conduct detailed surveys of water bodies including oceans, seas, lakes, and rivers. This specialization is key to the management of marine resources and development of the blue economy and maritime infrastructure.',
   },
   {
     id: 7,
-    image: geodeticImg,
-    title: 'Geodetic & International Boundary Surveys',
-    description: 'Geodetic and international boundary surveys for accurate positioning and border delineation.',
+    image: droneImg,
+    title: 'Aerial Surveys/ Drone Mapping',
+    description: 'Licensed surveyors use drones and other aerial platforms to collect high-resolution spatial data across large, rugged, or hard-to-reach areas. Using photogrammetry, this data is processed to produce accurate orthophotos, digital elevation models (DEMs), digital surface models (DSMs), detailed 3D terrain models and precise volume calculations.',
   },
   {
     id: 8,
-    image: sectionalImg,
-    title: 'Sectional Property Surveys',
-    description: 'Sectional property surveys for registration and property subdivision.',
+    image: cityImg,
+    title: '3D City Mapping & Modeling',
+    description: 'Licensed surveyors provide the high-accuracy spatial data needed to support urban planning and smart city development in Kenya. They produce detailed basemaps, 3D city models, and digital twins that guide zoning, land use planning, infrastructure design and efficient service delivery.',
   },
   {
     id: 9,
-    image: cadastralImg,
-    title: 'Cadastral Survey',
-    description: 'Cadastral surveying for property boundary demarcation and land registration.',
+    image: gisImg,
+    title: 'GIS & Spatial Data Infrastructure',
+    description: 'Licensed surveyors develop and manage geospatial data using GIS, where accuracy is critical for land administration, urban planning, infrastructure, public safety, legal compliance, and economic decision-making. They support the country’s Spatial Data Infrastructure (SDI) by enabling data sharing and standardisation across government agencies and stakeholders, while designing geodatabases, ensuring data quality, and integrating cadastral, topographic, utility, and environmental survey datasets to support sustainable national and county development.',
   },
   {
     id: 10,
-    image: consultancyImg,
-    title: 'Survey Consultancy',
-    description: 'Survey consultancy services offering expert advice in geospatial solution development.',
-  },
+    image: remoteImg,
+    title: 'Remote Sensing',
+    description: 'Licensed surveyors use satellite imagery, aerial photography, and Earth observation data to monitor and analyse changes on the Earth’s surface. This supports land use and land cover mapping, environmental monitoring, disaster assessment, climate change studies and precision agriculture, including agri-geomatics applications for improved planning and resource management.',
+  }
 ];
 
 const App = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -93,9 +94,14 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    if (isPaused) return;
     const timer = setInterval(nextSlide, 10000);
     return () => clearInterval(timer);
-  }, [nextSlide]);
+  }, [nextSlide, isPaused]);
+
+  const togglePause = () => {
+    setIsPaused((prev) => !prev);
+  };
 
   const slideVariants = {
     initial: (direction) => ({
@@ -150,15 +156,23 @@ const App = () => {
   };
 
   return (
-    <main className="carousel-container">
+    <main 
+      className={`carousel-container ${isPaused ? 'paused' : ''}`}
+      onClick={togglePause}
+    >
       {/* Progress Bar */}
-      <Motion.div 
-        key={`progress-${currentIndex}`}
-        className="progress-bar"
-        initial={{ width: 0 }}
-        animate={{ width: '100%' }}
-        transition={{ duration: 10, ease: 'linear' }}
-      />
+      <AnimatePresence mode="wait">
+        {!isPaused && (
+          <Motion.div 
+            key={`progress-${currentIndex}`}
+            className="progress-bar"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 10, ease: 'linear' }}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence initial={false} custom={direction}>
         <Motion.div
@@ -196,7 +210,7 @@ const App = () => {
       </AnimatePresence>
 
       {/* Controls */}
-      <div className="controls">
+      <div className="controls" onClick={(e) => e.stopPropagation()}>
         <button className="control-btn" onClick={prevSlide} aria-label="Previous slide">
           <ChevronLeft size={24} />
         </button>
@@ -206,7 +220,7 @@ const App = () => {
       </div>
 
       {/* Indicators */}
-      <div className="indicators">
+      <div className="indicators" onClick={(e) => e.stopPropagation()}>
         {carouselItems.map((_, index) => (
           <div 
             key={index}
@@ -218,6 +232,20 @@ const App = () => {
           />
         ))}
       </div>
+
+      {/* Pause Overlay Indicator (Optional - subtle) */}
+      <AnimatePresence>
+        {isPaused && (
+          <Motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="pause-indicator"
+          >
+            Paused
+          </Motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 };
