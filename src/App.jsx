@@ -44,7 +44,7 @@ const carouselItems = [
     id: 5,
     image: engineeringImg,
     title: 'Engineering Survey',
-    description: 'Licensed surveyors undertake engineering and construction surveys to support the planning, design, and execution of building and infrastructure projects.',
+    description: 'Licensed surveyors undertake consultancy in engineering, deformation monitoring, construction surveys, and as-built surveys to support the planning, design, and execution of building and infrastructure projects.',
   },
   {
     id: 6,
